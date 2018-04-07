@@ -1,0 +1,25 @@
+properties(
+    [
+        [
+            $class: 'BuildDiscarderProperty',
+            strategy: [$class: 'LogRotator', numToKeepStr: '10']
+        ],
+        pipelineTriggers([cron('H/5 * * * *')]),
+    ]
+)
+
+try{
+    node('nagen') {
+        stage('build'){
+             openshiftBuild(buildConfig: '${NAME}', showBuildLogs: 'true')
+        }
+
+        stage('deploy') {
+            openshiftDeploy(deploymentConfig: '${NAME}')
+        }
+    }
+} catch (Exception e) {
+    echo "send error mail"
+    mail subject: "Build failed with ${e.message}", to: "chrisabit@posteo.de", body: "Job failed: ${env.BUILD_URL} \n\n${e.stackTrace}"
+    throw e;
+}
