@@ -1,3 +1,4 @@
 # docker-training-beispiel
-* NachrichtenGenerator REST-Service (tomcat 8.5 / jersey)
-* Jenkins Pipeline (Build / Deploy)
+* NachrichtenGenerator REST-Service (SpringBoot)
+* Dockerfile (Port 8080)
+* Context-Path: "/nagen"
