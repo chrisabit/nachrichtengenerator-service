@@ -1,6 +1,8 @@
 package de.trion.training.nachrichtengenerator.api;
 
+import de.trion.training.nachrichtengenerator.service.NachrichtenGeheimnisHueter;
 import de.trion.training.nachrichtengenerator.service.NachrichtenGeneratorService;
+import de.trion.training.nachrichtengenerator.service.NachrichtenZaehler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +27,19 @@ public class NachrichtenGeneratorController {
     }
 
     @GetMapping(
-        value = "/version",
+        value = "/zugriffe",
         produces = "text/plain"
     )
-    public String version() {
-        return "1.0";
+    public String getZugriffe() {
+        return Integer.toString(new NachrichtenZaehler().getCount());
     }
+
+    @GetMapping(
+        value = "/geheim",
+        produces = "text/plain"
+    )
+    public String getGeheim() {
+        return new NachrichtenGeheimnisHueter().execute();
+    }
+
 }
